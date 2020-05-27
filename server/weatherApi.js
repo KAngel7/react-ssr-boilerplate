@@ -28,7 +28,11 @@ export const weatherRoutes = () => {
       response,
       body
     ) {
-      res.json(JSON.parse(response.body));
+      if (!error) {
+        res.json(JSON.parse(response.body));
+      } else {
+        throw new Error('Error');
+      }
     });
   });
 
