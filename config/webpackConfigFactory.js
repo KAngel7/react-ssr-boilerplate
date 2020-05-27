@@ -137,6 +137,10 @@ module.exports = function(envType) {
           'sass-loader',
           'import-glob-loader'
         ].filter(Boolean)
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: ['file-loader']
       }
     ].filter(Boolean)
   };

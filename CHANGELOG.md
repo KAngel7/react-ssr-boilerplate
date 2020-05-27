@@ -69,8 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CHANGELOG.md :grin:
 - Client-side data hydration setup using React context
-- Sample todo application
 - Sample API module for making HTTP requests
+- Weather test
 
 ### Changed
 

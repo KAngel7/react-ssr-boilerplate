@@ -1,59 +1,38 @@
 import React, { useState } from 'react';
+import AsyncSelect from 'react-select/async';
 
 import { api } from '../api';
-import { useServerData } from '../state/serverDataContext';
+import WeatherForecast from './WeatherForecast';
+
+const DEFAULT_CITY_ID = 1252431; // Ho Chi Minh
 
 const Home = () => {
-  const serverTodos = useServerData(data => {
-    return data.todos || [];
-  });
-  const [text, setText] = useState('');
-  const [todos, setTodos] = useState(serverTodos);
-
+  const [selectedCity, setSelectedCity] = useState(DEFAULT_CITY_ID);
+  const handleLoadCities = inputValue =>
+    api.weather.getCities(inputValue).then(res =>
+      res.map(city => ({
+        value: city.woeid,
+        label: city.title
+      }))
+    );
+  const handleSelectCity = selectedOption => {
+    setSelectedCity(selectedOption.value);
+  };
   return (
     <div>
-      <h1>Home page</h1>
-
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-
-          const newTodo = {
-            text
-          };
-
-          api.todos.create(newTodo).then(res => {
-            setTodos([...todos, res]);
-            setText('');
-          });
-        }}
-      >
-        <label htmlFor="todo">Add a todo</label>
-        <br />
-        <input
-          id="todo"
-          type="text"
-          value={text}
-          autoComplete="off"
-          onChange={e => setText(e.target.value)}
+      <h1>Weather today</h1>
+      <div className="select-wrapper">
+        <AsyncSelect
+          inputId={'1'}
+          placeholder={'Search for your city'}
+          cacheOptions
+          loadOptions={handleLoadCities}
+          onChange={handleSelectCity}
         />
-      </form>
-
-      <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>{todo.text}</li>
-        ))}
-      </ul>
+      </div>
+      {selectedCity && <WeatherForecast cityId={selectedCity} />}
     </div>
   );
-};
-
-Home.fetchData = () => {
-  return api.todos.all().then(todos => {
-    return {
-      todos
-    };
-  });
 };
 
 export default Home;

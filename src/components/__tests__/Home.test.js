@@ -5,13 +5,13 @@ import Home from '../Home';
 import { ServerDataProvider } from '../../state/serverDataContext';
 
 describe('<Home />', () => {
-  it('renders server todos', () => {
+  it('renders Home title', () => {
     const { container } = render(
-      <ServerDataProvider value={{ todos: [{ id: 1, text: 'Test todo' }] }}>
+      <ServerDataProvider>
         <Home />
       </ServerDataProvider>
     );
 
-    expect(container.querySelector('li').textContent).toEqual('Test todo');
+    expect(container.querySelector('h1').textContent).toEqual('Weather today');
   });
 });
